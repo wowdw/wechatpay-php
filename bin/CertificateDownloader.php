@@ -31,6 +31,9 @@ class CertificateDownloader
 {
     private const DEFAULT_BASE_URI = 'https://api.mch.weixin.qq.com/';
 
+    /**
+     * 命令行模式下载证书
+     */
     public function run(): void
     {
         $opts = $this->parseOpts();
@@ -39,6 +42,18 @@ class CertificateDownloader
             $this->printHelp();
             return;
         }
+        if (isset($opts['version'])) {
+            self::prompt(ClientDecoratorInterface::VERSION);
+            return;
+        }
+        $this->job($opts);
+    }
+    
+    /**
+     * 下载证书 (用于指定接口模式调用)
+     */
+    public function init( $opts ): void
+    {
         if (isset($opts['version'])) {
             self::prompt(ClientDecoratorInterface::VERSION);
             return;
